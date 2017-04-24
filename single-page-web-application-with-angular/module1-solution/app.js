@@ -22,9 +22,9 @@ function LunchCheckController($scope) {
     if ($scope.numEntry == 0) {
       $scope.msg = "Please enter data first";
     } else if ($scope.numEntry >=1 && $scope.numEntry <=3) {
-      $scope.msg = "Enjoy";
+      $scope.msg = "Enjoy!";
     } else {
-      $scope.msg = "Too much";
+      $scope.msg = "Too much!";
     }
 
     console.log($scope.numEntry);
