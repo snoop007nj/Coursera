@@ -27,10 +27,10 @@ var shoppingList = [
 angular.module('ShoppingListApp', [])
 .controller('ShoppingListAddController', ShoppingListAddController)
 .controller('ShoppingListShowController', ShoppingListShowController)
-.service('ShoppingListService', ShoppingListService);
+.service('ShoppingListCheckOffService', ShoppingListCheckOffService);
 
-ShoppingListAddController.$inject = ['ShoppingListService'];
-function ShoppingListAddController(ShoppingListService) {
+ShoppingListAddController.$inject = ['ShoppingListCheckOffService'];
+function ShoppingListAddController(ShoppingListCheckOffService) {
 
   var itemAdder = this;
 
@@ -47,7 +47,7 @@ function ShoppingListAddController(ShoppingListService) {
     console.log(itemAdder.itemIndex, itemAdder.itemName, itemAdder.itemQuantity);
 
     //add item to list of bought items
-    ShoppingListService.addItem(itemAdder.itemName, itemAdder.itemQuantity);
+    ShoppingListCheckOffService.addItem(itemAdder.itemName, itemAdder.itemQuantity);
 
     //remove item from list of to buy items
     itemAdder.shoppingList.splice(itemAdder.itemIndex, 1);
@@ -56,19 +56,19 @@ function ShoppingListAddController(ShoppingListService) {
 };
 
 
-ShoppingListShowController.$inject = ['ShoppingListService'];
-function ShoppingListShowController(ShoppingListService) {
+ShoppingListShowController.$inject = ['ShoppingListCheckOffService'];
+function ShoppingListShowController(ShoppingListCheckOffService) {
   var showList = this;
 
-  showList.items = ShoppingListService.getItems();
+  showList.items = ShoppingListCheckOffService.getItems();
 
   showList.removeItem = function (itemIndex) {
-    ShoppingListService.removeItem(itemIndex);
+    ShoppingListCheckOffService.removeItem(itemIndex);
   };
 }
 
 
-function ShoppingListService() {
+function ShoppingListCheckOffService() {
   var service = this;
 
   // List of shopping items
