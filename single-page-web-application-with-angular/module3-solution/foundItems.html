@@ -1,0 +1,6 @@
+<ol>
+  <li ng-repeat="item in menu.found">
+    {{ item.name }} ({{ item.short_name }}), {{ item.description}}
+    <button ng-click="menu.removeItem($index);">Don't want this one</button>
+  </li>
+</ol>
