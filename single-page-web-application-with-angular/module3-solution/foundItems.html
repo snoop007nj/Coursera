@@ -1,6 +1,8 @@
+<h3>{{message}}</h3>
+
 <ol>
-  <li ng-repeat="item in menu.found">
+  <li ng-repeat="item in found">
     {{ item.name }} ({{ item.short_name }}), {{ item.description}}
-    <button ng-click="menu.removeItem($index);">Don't want this one</button>
+    <button ng-click="removeItem($index);">Don't want this one</button>
   </li>
 </ol>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app='MenuCategoriesApp'>
+<html lang="en" ng-app='NarrowItDownApp'>
   <head>
     <title>Narrow Down Your Menu Choice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,25 +9,18 @@
     <script src="app.js"></script>
   </head>
 <body>
-   <div class="container" ng-controller='MenuCategoriesController as menu'>
+   <div class="container" ng-controller='NarrowItDownController as menu'>
     <h1>Narrow Down Your Chinese Menu Choice</h1>
 
     <div class="form-group">
       <input type="text" ng-model="menu.searchTerm" placeholder="search term" class="form-control">
     </div>
     <div class="narrow-button">
-      <button class="btn btn-primary" ng-click="menu.getMenuItem();">Narrow It Down For Me!</button>
+      <button class="btn btn-primary" ng-click="menu.narrowItDown();">Narrow It Down For Me!</button>
     </div>
     <br>
     <br>
-    <!-- <ol>
-      <li ng-repeat="item in menu.found">
-        {{ item.name }} ({{ item.short_name }}), {{ item.description}}
-        <button ng-click="menu.removeItem($index);">Don't want this one</button>
-      </li>
-    </ol> -->
-
-    <foundItems found-items="menu"></foundItems>
+    <found-items my-message="{{menu.message}}" on-remove="menu.found"></found-items>
     <!-- found-items should be implemented as a component -->
     <!-- <found-items found-items="...." on-remove="...."></found-items> -->
   </div>
