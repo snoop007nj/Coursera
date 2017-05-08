@@ -13,7 +13,7 @@ function FoundItemsDirective() {
     restrict: 'A',
     scope: {
       found_directive: '<foundItems',
-      onRemove: '&'
+      onRemove_directive: '&'
     },
     controller: FoundItemsDirectiveController,
     controllerAs: 'menu',
@@ -29,13 +29,7 @@ function FoundItemsDirectiveController() {
   console.log("...FoundItemsDirectiveController()");
 
   menu.itemsInFound = function () {
-    console.log("menu.itemsInFound");
-    console.log("menu.found_ddo.length:", menu.found_ddo.length);
-    if (menu.found_ddo.length > 0) {
-      return true;
-    }
-
-    return false;
+    return (menu.found_directive ? (!(menu.found_directive.length != 0) ? true : false) : false);
   };
 
 }
