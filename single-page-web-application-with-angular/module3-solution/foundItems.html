@@ -1,8 +1,6 @@
-<h3>{{message}}</h3>
-
-<ol>
-  <li ng-repeat="item in found">
-    {{ item.name }} ({{ item.short_name }}), {{ item.description}}
-    <button ng-click="removeItem($index);">Don't want this one</button>
+<ul>
+  <li ng-repeat="item in menu.found_directive">
+    {{ item.name }} ({{ item.short_name }}): {{ item.description}}
+    <button class="btn btn-primary btn-sm" ng-click="menu.onRemove({index: $index});">Delete</button>
   </li>
-</ol>
+</ul>

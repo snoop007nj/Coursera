@@ -5,89 +5,94 @@ angular.module('NarrowItDownApp', [])
 .controller('NarrowItDownController', NarrowItDownController)
 .service('MenuSearchService', MenuSearchService)
 .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com")
-.directive('foundItems', FoundItems);
+.directive('foundItems', FoundItemsDirective);
 
-function FoundItems() {
+function FoundItemsDirective() {
   var ddo = {
     templateUrl: 'foundItems.html',
-    restrict: 'E',
+    restrict: 'A',
     scope: {
-      message: '@myMessage',
-      found: '<onRemove',
-    }
+      found_directive: '<foundItems',
+      onRemove: '&'
+    },
+    controller: FoundItemsDirectiveController,
+    controllerAs: 'menu',
+    bindToController: true
   };
 
   return ddo;
 }
 
+function FoundItemsDirectiveController() {
+  var menu = this;
+
+  console.log("...FoundItemsDirectiveController()");
+
+  menu.itemsInFound = function () {
+    console.log("menu.itemsInFound");
+    console.log("menu.found_ddo.length:", menu.found_ddo.length);
+    if (menu.found_ddo.length > 0) {
+      return true;
+    }
+
+    return false;
+  };
+
+}
+
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
+  console.log("...NarrowItDownController()");
+
   var menu = this;
 
   menu.searchTerm = "";
-  menu.found = [];
+  menu.clicked = false;
 
   //user pressed narrowItDown button
   menu.narrowItDown = function () {
-    menu.message = "";
-
+    menu.clicked = true;
+    menu.found = [];
     if ( menu.searchTerm.trim() ) {
       menu.found = MenuSearchService.getMatchedMenuItems(menu.searchTerm);
-    } else {
-      menu.found = [];
-      menu.getMessage();
     }
   };
 
-  menu.getMessage = function() {
-    if (menu.found.length == 0) {
-      console.log("Nothing found");
-      menu.message = "Nothing found";
-    }
+  menu.removeItem = function(itemIndex) {
+    menu.found.splice(itemIndex, 1);
   }
 
-  menu.removeItem = function (itemIndex) {
-    menu.found.splice(itemIndex, 1);
-  };
 }
-
 
 MenuSearchService.$inject = ['$http', 'ApiBasePath'];
 function MenuSearchService($http, ApiBasePath) {
+  console.log("...MenuSearchService()");
+
   var service = this;
-  service.menuSize = 0;
+
+  var foundItems = [];
 
   service.getMatchedMenuItems = function (searchTerm) {
+
     var foundItems = [];
 
     searchTerm = searchTerm.trim().toLowerCase();
-    console.log(searchTerm);
 
     $http({
       method: "GET",
       url: (ApiBasePath + "/menu_items.json"),
     }).then(function (response) {
-
-      var i;
-      service.menuSize = response.data.menu_items.length;
-      console.log("menuSize:", service.menuSize);
-      for (i = 0; i < response.data.menu_items.length; i++) {
+      for (var i = 0; i < response.data.menu_items.length; i++) {
         if ( response.data.menu_items[i].description.toLowerCase().indexOf(searchTerm) !== -1 ) {
           foundItems.push(response.data.menu_items[i]);
         }
       }
-
     }).catch(function (error) {
       console.log(error);
     });
 
     return foundItems;
   };
-
-  service.getMenuSize = function () {
-    return service.menuSize;
-  }
-
 }
 
 })();
