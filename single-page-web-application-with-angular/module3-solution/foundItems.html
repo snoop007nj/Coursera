@@ -1,7 +1,7 @@
 <ul>
   <li ng-repeat="item in menu.found_directive">
     {{ item.name }} ({{ item.short_name }}): {{ item.description}}
-    <button class="btn btn-primary btn-sm" ng-click="menu.onRemove_directive({index: $index});">Delete</button>
+    <button class="btn btn-primary btn-sm" ng-click="menu.onRemove({index: $index});">Delete</button>
   </li>
 </ul>
 <div class="emptyMessage" ng-if="menu.itemsInFound()">Nothing found</div>

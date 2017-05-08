@@ -13,7 +13,7 @@ function FoundItemsDirective() {
     restrict: 'A',
     scope: {
       found_directive: '<foundItems',
-      onRemove_directive: '&'
+      onRemove: '&'
     },
     controller: FoundItemsDirectiveController,
     controllerAs: 'menu',
