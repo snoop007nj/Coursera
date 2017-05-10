@@ -45,22 +45,22 @@ function NarrowItDownController(MenuSearchService) {
   //user pressed narrowItDown button
   menu.narrowItDown = function () {
     menu.found = [];
-    menu.itemsInFound = false;
+    menu.nothingFound = false;
     if ( menu.searchTerm.trim() ) {
       MenuSearchService.getMatchedMenuItems(menu.searchTerm)
       .then(function (response) {
         menu.found = response;
         if (menu.found.length == 0) {
-          menu.itemsInFound = true;
+          menu.nothingFound = true;
         }
       })
       .catch(function (error) {
         console.log("Something went terribly wrong.");
-        menu.itemsInFound = true;
+        menu.nothingFound = true;
       });
 
     } else {
-      menu.itemsInFound = true;
+      menu.nothingFound = true;
     }
   };
 
