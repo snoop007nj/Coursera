@@ -41,21 +41,32 @@ function NarrowItDownController(MenuSearchService) {
   var menu = this;
 
   menu.searchTerm = "";
-  menu.clicked = false;
 
   //user pressed narrowItDown button
   menu.narrowItDown = function () {
-    menu.clicked = true;
     menu.found = [];
+    menu.itemsInFound = false;
     if ( menu.searchTerm.trim() ) {
-      menu.found = MenuSearchService.getMatchedMenuItems(menu.searchTerm);
+      MenuSearchService.getMatchedMenuItems(menu.searchTerm)
+      .then(function (response) {
+        menu.found = response;
+        if (menu.found.length == 0) {
+          menu.itemsInFound = true;
+        }
+      })
+      .catch(function (error) {
+        console.log("Something went terribly wrong.");
+        menu.itemsInFound = true;
+      });
+
+    } else {
+      menu.itemsInFound = true;
     }
   };
 
   menu.removeItem = function(itemIndex) {
     menu.found.splice(itemIndex, 1);
   }
-
 }
 
 MenuSearchService.$inject = ['$http', 'ApiBasePath'];
@@ -64,15 +75,13 @@ function MenuSearchService($http, ApiBasePath) {
 
   var service = this;
 
-  var foundItems = [];
-
   service.getMatchedMenuItems = function (searchTerm) {
 
     var foundItems = [];
 
     searchTerm = searchTerm.trim().toLowerCase();
 
-    $http({
+    return $http({
       method: "GET",
       url: (ApiBasePath + "/menu_items.json"),
     }).then(function (response) {
@@ -81,11 +90,9 @@ function MenuSearchService($http, ApiBasePath) {
           foundItems.push(response.data.menu_items[i]);
         }
       }
-    }).catch(function (error) {
-      console.log(error);
-    });
+      return foundItems;
+    })
 
-    return foundItems;
   };
 }
 
